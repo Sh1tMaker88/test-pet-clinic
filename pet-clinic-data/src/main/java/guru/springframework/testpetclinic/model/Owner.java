@@ -3,6 +3,7 @@ package guru.springframework.testpetclinic.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -15,5 +16,5 @@ public class Owner extends Person {
 
     private String telephone;
 
-    private Set<Pet> pets;
+    private Set<Pet> pets = new HashSet<>();
 }
