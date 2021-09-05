@@ -10,4 +10,10 @@ public class IndexController {
     public String index() {
         return "index";
     }
+
+    @GetMapping("/oups")
+    public String oopsHandler() {
+
+        return "notImplemented";
+    }
 }
