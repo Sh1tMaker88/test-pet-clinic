@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -28,11 +29,12 @@ public class OwnerSpringJpaService implements OwnerService {
 
     @Override
     public Owner findByLastName(String lastName) {
-        if (ownerRepository.findByLastName(lastName).isEmpty()) {
+        Optional<Owner> ownerOptional = ownerRepository.findByLastName(lastName);
+        if (ownerOptional.isEmpty()) {
             throw new RuntimeException("No such last name in database");
         }
 
-        return ownerRepository.findByLastName(lastName).get();
+        return ownerOptional.get();
     }
 
     @Override
