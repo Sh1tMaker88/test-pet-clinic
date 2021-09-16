@@ -1,6 +1,7 @@
 package guru.springframework.testpetclinic.controller;
 
 import guru.springframework.testpetclinic.model.Owner;
+import guru.springframework.testpetclinic.model.Pet;
 import guru.springframework.testpetclinic.model.PetType;
 import guru.springframework.testpetclinic.service.OwnerService;
 import guru.springframework.testpetclinic.service.PetService;
@@ -68,7 +69,30 @@ class PetControllerTest {
         when(petTypeService.findAll()).thenReturn(petTypes);
 
         mockMvc.perform(post("/owners/1/pets/new"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/owners/1"));
+    }
+
+    @Test
+    void initUpdateForm() throws Exception {
+        when(ownerService.findById(anyLong())).thenReturn(owner);
+        when(petTypeService.findAll()).thenReturn(petTypes);
+        when(petService.findById(anyLong())).thenReturn(Pet.builder().id(2L).build());
+
+        mockMvc.perform(get("/owners/1/pets/2/edit"))
                 .andExpect(status().isOk())
+                .andExpect(view().name("pets/createOrUpdatePetForm"))
+                .andExpect(model().attributeExists("owner"))
+                .andExpect(model().attributeExists("pet"));
+    }
+
+    @Test
+    void processUpdateForm() throws Exception {
+        when(ownerService.findById(anyLong())).thenReturn(owner);
+        when(petTypeService.findAll()).thenReturn(petTypes);
+
+        mockMvc.perform(post("/owners/1/pets/2/edit"))
+                .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/owners/1"));
     }
 }
